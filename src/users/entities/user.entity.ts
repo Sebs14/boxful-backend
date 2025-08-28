@@ -1,10 +1,5 @@
-import {
-  Entity,
-  ObjectId,
-  ObjectIdColumn,
-  Column,
-  BeforeInsert,
-} from 'typeorm';
+import { Entity, ObjectIdColumn, Column, BeforeInsert } from 'typeorm';
+import { ObjectId } from 'mongodb';
 import * as bcrypt from 'bcrypt';
 
 @Entity()

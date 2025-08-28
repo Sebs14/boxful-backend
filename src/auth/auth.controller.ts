@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { User } from '../users/entities/user.entity';
-import { ObjectId } from 'typeorm';
+import { ObjectId } from 'mongodb';
 
 interface UserWithoutPassword {
   _id: ObjectId;
@@ -46,7 +46,17 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')
-  getProfile(@Request() req: { user: JwtUser }) {
-    return req.user;
+  async getProfile(@Request() req: { user: JwtUser }) {
+    // Obtener el usuario completo de la base de datos
+    const user = await this.usersService.findById(req.user.userId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Retornar solo los campos necesarios sin la contraseña
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _password, ...result } = user;
+    return result;
   }
 }
