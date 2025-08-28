@@ -9,4 +9,13 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('test-cors')
+  testCors() {
+    return {
+      message: 'CORS is working!',
+      timestamp: new Date().toISOString(),
+      origin: 'Backend API',
+    };
+  }
 }
